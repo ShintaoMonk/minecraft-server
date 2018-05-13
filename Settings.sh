@@ -16,5 +16,43 @@ else
 fi
 
 req=$1
+val=$2
+action="write"
+if [[ $val == "" ]]
+then
+	action="read"
+else
+	echo "" > $dir'/setting.tmp'
+fi
 
 #Actual Scripts
+
+cat $file | while read line
+do
+	equal="false"
+	
+	lnnme=""
+	lnval=""
+	
+	if [[ $action == "write" ]]
+	then
+		if [[ $equal == "false" ]]
+		then
+			echo $lnnme"="$lnnme >> $dir'/setting.tmp'
+		else
+			echo $lnnme"="$val >> $dir'/setting.tmp'
+		fi
+	else
+		if [[ $lnnme == $req ]]
+		then
+			echo $lnval
+		fi
+	fi
+done
+
+if [[ $action == "write" ]]
+then
+	cat $dir'/setting.tmp' > $dir'/setting'
+fi
+
+rm $dir'/setting.tmp'
