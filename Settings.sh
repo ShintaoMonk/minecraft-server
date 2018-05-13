@@ -39,9 +39,14 @@ do
 	then
 		equal='false'
 	else
-		if [[ $lnnme == $req ]]
+		if [[ $line == "" ]]
 		then
-			equal='true'
+			equal='false'
+		else
+			if [[ $lnnme == $req ]]
+			then
+				equal='true'
+			fi
 		fi
 	fi
 
@@ -64,7 +69,11 @@ done
 
 if [[ $action == "write" ]]
 then
-	cat $dir'/setting.tmp' > $dir'/setting'
+	if [[ $exists == "false" ]]
+	then
+		echo $req"="$val >> $dir'/setting.tmp'
+	fi
+	mv -u $dir'/setting.tmp' $dir'/setting'
 fi
 
 if [ -e $dir'/setting.tmp' ]
