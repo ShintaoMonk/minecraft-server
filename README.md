@@ -1,2 +1,2 @@
 # minecraft-server
-Automatically Install and Run your Minecraft Server
+This program is used on linux to install and run a Minecraft Spigot Server
