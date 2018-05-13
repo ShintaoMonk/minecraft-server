@@ -27,13 +27,24 @@ fi
 
 #Actual Scripts
 
+exists="false"
+
 cat $file | while read line
 do
 	equal="false"
+	lnnme=${line%%=*}
+	lnval=${line#*=}
 	
-	lnnme=""
-	lnval=""
-	
+	if [[ $line == '#'* ]]
+	then
+		equal='false'
+	else
+		if [[ $lnnme == $req ]]
+		then
+			equal='true'
+		fi
+	fi
+
 	if [[ $action == "write" ]]
 	then
 		if [[ $equal == "false" ]]
@@ -41,6 +52,7 @@ do
 			echo $lnnme"="$lnnme >> $dir'/setting.tmp'
 		else
 			echo $lnnme"="$val >> $dir'/setting.tmp'
+			exists="true"
 		fi
 	else
 		if [[ $lnnme == $req ]]
@@ -55,4 +67,7 @@ then
 	cat $dir'/setting.tmp' > $dir'/setting'
 fi
 
-rm $dir'/setting.tmp'
+if [ -e $dir'/setting.tmp' ]
+then
+	rm $dir'/setting.tmp'
+fi
