@@ -17,27 +17,4 @@ fi
 
 req=$1
 
-# Actual Script
-
-cat $file | while read line
-do
-#For each line
-
-#Check for "#" lines
-if [[ $line != "#"* ]]
-then
-##
-
-pre=${line%%=*}
-#echo $pre
-
-if [[ $pre == $req ]]
-then
-	echo ${line#*=}
-fi
-
-#Finish
-fi
-
-#End for each line
-done
+#Actual Scripts
