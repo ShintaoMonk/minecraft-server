@@ -1,4 +1,4 @@
 
-#in format of {setting}=#in format of {setting}
+#in format of {setting}={variable}
 debug=debug
-Testing=false
+ABC=testing
