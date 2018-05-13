@@ -34,14 +34,17 @@ do
 	equal="false"
 	lnnme=${line%%=*}
 	lnval=${line#*=}
-	
+	invis="false"
+
 	if [[ $line == '#'* ]]
 	then
 		equal='false'
+		invis="true"
 	else
 		if [[ $line == "" ]]
 		then
 			equal='false'
+			invis="true"
 		else
 			if [[ $lnnme == $req ]]
 			then
@@ -52,12 +55,17 @@ do
 
 	if [[ $action == "write" ]]
 	then
-		if [[ $equal == "false" ]]
+		if [[ $invis == "true" ]]
 		then
-			echo $lnnme"="$lnnme >> $dir'/setting.tmp'
+			echo $line >> $dir'/setting.tmp'
 		else
-			echo $lnnme"="$val >> $dir'/setting.tmp'
-			exists="true"
+			if [[ $equal == "false" ]]
+			then
+				echo $lnnme"="$lnnme >> $dir'/setting.tmp'
+			else
+				echo $lnnme"="$val >> $dir'/setting.tmp'
+				exists="true"
+			fi
 		fi
 	else
 		if [[ $lnnme == $req ]]
