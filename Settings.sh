@@ -11,7 +11,8 @@ then
 	false=false
 else
 	#echo "Setting File does not exist"
-	stop
+	#Create Settings
+	echo "#in format of {setting}={variable}" > settings
 fi
 
 req=$1
