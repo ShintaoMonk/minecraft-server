@@ -4,6 +4,16 @@ dir=$(pwd)
 file=$dir'/settings'
 tmp=$dir'/.settings.tmp'
 
+if [ -e $file ]
+then
+	exists=true
+else
+	#defaults
+	echo "" > $file
+	echo "debug=false" >> $file
+	echo "directory=" >> $file
+
+
 if [[ $1 == "" ]]
 then
 	foo=foo
