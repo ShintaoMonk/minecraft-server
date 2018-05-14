@@ -4,87 +4,89 @@ dir=$(pwd)
 file=$dir'/settings'
 
 #echo "setting directory = "$file
-
-if [ -e $file ]
+if [[ $1 == "" ]]
 then
-	#echo "File Exists"
-	false=false
-else
-	#echo "Setting File does not exist"
-	#Create Settings
-	echo "#in format of {setting}={variable}" > settings
-fi
-
-req=$1
-val=$2
-action="write"
-if [[ $val == "" ]]
-then
-	action="read"
-else
-	echo "" > $dir'/settings.tmp'
-fi
-
-#Actual Scripts
-
-exists="false"
-
-cat $file | while read line
-do
-	equal="false"
-	lnnme=${line%%=*}
-	lnval=${line#*=}
-	invis="false"
-
-	if [[ $line == '#'* ]]
+	if [ -e $file ]
 	then
-		equal='false'
-		invis="true"
+		#echo "File Exists"
+		false=false
 	else
-		if [[ $line == "" ]]
+		#echo "Setting File does not exist"
+		#Create Settings
+		echo "#in format of {setting}={variable}" > settings
+	fi
+	
+	req=$1
+	val=$2
+	action="write"
+	if [[ $val == "" ]]
+	then
+		action="read"
+	else
+		echo "" > $dir'/settings.tmp'
+	fi
+	
+	#Actual Scripts
+	
+	exists="false"
+	
+	cat $file | while read line
+	do
+		equal="false"
+		lnnme=${line%%=*}
+		lnval=${line#*=}
+		invis="false"
+	
+		if [[ $line == '#'* ]]
 		then
 			equal='false'
 			invis="true"
 		else
+			if [[ $line == "" ]]
+			then
+				equal='false'
+				invis="true"
+			else
+				if [[ $lnnme == $req ]]
+				then
+					equal='true'
+				fi
+			fi
+		fi
+	
+		if [[ $action == "write" ]]
+		then
+			if [[ $invis == "true" ]]
+			then
+				echo $line >> $dir'/settings.tmp'
+			else
+				if [[ $equal == "false" ]]
+				then
+					echo $lnnme"="$lnnme >> $dir'/settings.tmp'
+				else
+					echo $lnnme"="$val >> $dir'/settings.tmp'
+					exists="true"
+				fi
+			fi
+		else
 			if [[ $lnnme == $req ]]
 			then
-				equal='true'
+				echo $lnval
 			fi
 		fi
-	fi
-
+	done
+	
 	if [[ $action == "write" ]]
 	then
-		if [[ $invis == "true" ]]
+		if [[ $exists == "false" ]]
 		then
-			echo $line >> $dir'/settings.tmp'
-		else
-			if [[ $equal == "false" ]]
-			then
-				echo $lnnme"="$lnnme >> $dir'/settings.tmp'
-			else
-				echo $lnnme"="$val >> $dir'/settings.tmp'
-				exists="true"
-			fi
+			echo $req"="$val >> $dir'/settings.tmp'
 		fi
-	else
-		if [[ $lnnme == $req ]]
-		then
-			echo $lnval
-		fi
+		mv -u $dir'/setting.tmp' $dir'/settings'
 	fi
-done
-
-if [[ $action == "write" ]]
-then
-	if [[ $exists == "false" ]]
+	
+	if [ -e $dir'/settings.tmp' ]
 	then
-		echo $req"="$val >> $dir'/settings.tmp'
+		rm $dir'/settings.tmp'
 	fi
-	mv -u $dir'/setting.tmp' $dir'/settings'
-fi
-
-if [ -e $dir'/settings.tmp' ]
-then
-	rm $dir'/settings.tmp'
 fi
