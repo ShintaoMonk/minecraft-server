@@ -3,6 +3,8 @@ dir=$(pwd)
 # Get the file, as per naming convention (update for any changes on the file name)
 file=$dir'/settings'
 
+tmpname=$dir"/.settings.tmp"
+
 #echo "setting directory = "$file
 if [[ $1 == "" ]]
 then
@@ -23,7 +25,7 @@ then
 	then
 		action="read"
 	else
-		echo "" > $dir'/settings.tmp'
+		echo "" > $tmpname
 	fi
 	
 	#Actual Scripts
@@ -58,13 +60,13 @@ then
 		then
 			if [[ $invis == "true" ]]
 			then
-				echo $line >> $dir'/settings.tmp'
+				echo $line >> $tmpname
 			else
 				if [[ $equal == "false" ]]
 				then
-					echo $lnnme"="$lnnme >> $dir'/settings.tmp'
+					echo $lnnme"="$lnnme >> $tmpname
 				else
-					echo $lnnme"="$val >> $dir'/settings.tmp'
+					echo $lnnme"="$val >> $tmpname
 					exists="true"
 				fi
 			fi
@@ -80,13 +82,13 @@ then
 	then
 		if [[ $exists == "false" ]]
 		then
-			echo $req"="$val >> $dir'/settings.tmp'
+			echo $req"="$val >> $tmpname
 		fi
-		mv -u $dir'/setting.tmp' $dir'/settings'
+		mv -u $dir'/setting.tmp' $tmpname
 	fi
 	
-	if [ -e $dir'/settings.tmp' ]
+	if [ -e $tmpname ]
 	then
-		rm $dir'/settings.tmp'
+		rm $tmpname
 	fi
 fi
