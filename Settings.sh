@@ -22,7 +22,7 @@ if [[ $val == "" ]]
 then
 	action="read"
 else
-	echo "" > $dir'/setting.tmp'
+	echo "" > $dir'/settings.tmp'
 fi
 
 #Actual Scripts
@@ -57,13 +57,13 @@ do
 	then
 		if [[ $invis == "true" ]]
 		then
-			echo $line >> $dir'/setting.tmp'
+			echo $line >> $dir'/settings.tmp'
 		else
 			if [[ $equal == "false" ]]
 			then
-				echo $lnnme"="$lnnme >> $dir'/setting.tmp'
+				echo $lnnme"="$lnnme >> $dir'/settings.tmp'
 			else
-				echo $lnnme"="$val >> $dir'/setting.tmp'
+				echo $lnnme"="$val >> $dir'/settings.tmp'
 				exists="true"
 			fi
 		fi
@@ -79,12 +79,12 @@ if [[ $action == "write" ]]
 then
 	if [[ $exists == "false" ]]
 	then
-		echo $req"="$val >> $dir'/setting.tmp'
+		echo $req"="$val >> $dir'/settings.tmp'
 	fi
-	mv -u $dir'/setting.tmp' $dir'/setting'
+	mv -u $dir'/setting.tmp' $dir'/settings'
 fi
 
-if [ -e $dir'/setting.tmp' ]
+if [ -e $dir'/settings.tmp' ]
 then
-	rm $dir'/setting.tmp'
+	rm $dir'/settings.tmp'
 fi
