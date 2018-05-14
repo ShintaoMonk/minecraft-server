@@ -1,2 +1,5 @@
+
 #in format of {setting}={variable}
-debug=true
+test=foo
+debug=foo
+help=true
